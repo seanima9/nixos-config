@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   hardware.graphics.enable = true;
 
@@ -11,4 +11,9 @@
     nvidiaSettings = true;
     powerManagement.enable = false;
   };
+
+  allowedUnfree = [
+    "nvidia-x11"
+    "nvidia-settings"
+  ];
 }

@@ -5,9 +5,9 @@ let
 
   bind = key: dispatcher: { _args = [ key (lua dispatcher) ]; };
 
-  exec        = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
-  moveFocus   = dir: ''hl.dsp.focus({ direction = "${dir}" })'';
-  moveWindow  = dir: ''hl.dsp.window.move({ direction = "${dir}" })'';
+  exec = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
+  moveFocus = dir: ''hl.dsp.focus({ direction = "${dir}" })'';
+  moveWindow = dir: ''hl.dsp.window.move({ direction = "${dir}" })'';
 
   gotoWorkspace = n: ''hl.dsp.focus({ workspace = "${toString n}" })'';
   moveToWorkspace = n: ''hl.dsp.window.move({ workspace = "${toString n}" })'';
@@ -18,6 +18,9 @@ let
   ]) (lib.range 1 9));
 in
 {
+  xdg.configFile."uwsm/env".source =
+    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+
   home.pointerCursor = {
     enable = true;
     gtk.enable = true;
@@ -32,6 +35,8 @@ in
     enable = true;
     configType = "lua";
     systemd.enable = false;
+    package = null;
+    portalPackage = null;
 
     settings = {
       config = {
@@ -39,12 +44,6 @@ in
           kb_layout = "gb";
         };
       };
-
-      monitor = [
-        { output = "DP-3"; mode = "1920x1080@165"; position = "0x0"; scale = 1; }
-        { output = "DP-1"; mode = "3840x2160@165"; position = "1920x0"; scale = 1.5; }
-        { output = "HDMI-A-1"; mode = "1920x1080@60"; position = "4480x0"; scale = 1; }
-      ];
 
       bind = [
         (bind "SUPER + H" (moveFocus "l"))
@@ -57,11 +56,11 @@ in
         (bind "SUPER + SHIFT + K" (moveWindow "u"))
         (bind "SUPER + SHIFT + L" (moveWindow "r"))
 
-        (bind "SUPER + B" (exec "brave"))
+        (bind "SUPER + B" (exec "brave-origin"))
         (bind "SUPER + T" (exec "ghostty"))
-	(bind "SUPER + SPACE" (exec "rofi -show drun"))
+        (bind "SUPER + SPACE" (exec "rofi -show drun"))
 
-	(bind "SUPER + SHIFT + Q" "hl.dsp.window.close()")
+        (bind "SUPER + SHIFT + Q" "hl.dsp.window.close()")
         (bind "SUPER + SHIFT + M" "hl.dsp.exit()")
       ] ++ workspaceBinds;
     };
