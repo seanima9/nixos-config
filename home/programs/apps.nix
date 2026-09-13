@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
   programs.vscode.enable = true;
-  home.packages = [ pkgs.brave-origin ];
+  home.packages = with pkgs; [
+    brave-origin
+    trezor-suite
+    pavucontrol
+  ];
 }

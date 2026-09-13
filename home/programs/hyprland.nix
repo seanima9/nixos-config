@@ -16,10 +16,30 @@ let
     (bind "SUPER + ${toString n}" (gotoWorkspace n))
     (bind "SUPER + SHIFT + ${toString n}" (moveToWorkspace n))
   ]) (lib.range 1 9));
+
+  cycleFcitx = pkgs.writeShellScript "cycle-fcitx" ''
+    current=$(fcitx5-remote -n 2>/dev/null || true)
+    case "$current" in
+      pinyin) fcitx5-remote -s mozc ;;
+      mozc) fcitx5-remote -s keyboard-gb ;;
+      *) fcitx5-remote -s pinyin ;;
+    esac
+  '';
 in
 {
   xdg.configFile."uwsm/env".source =
     "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
 
   home.pointerCursor = {
     enable = true;
@@ -43,13 +63,40 @@ in
         input = {
           kb_layout = "gb";
         };
+        general.col = {
+          active_border = lua "colors.accent";
+          inactive_border = lua "colors.overlay0";
+        };
+        misc = {
+          disable_hyprland_logo = true;
+          force_default_wallpaper = 0;
+          background_color = lua "colors.crust";
+        };
+        decoration = {
+          blur = {
+            enabled = true;
+            size = 8;
+            passes = 2;
+          };
+        };
       };
+
+      layer_rule = [
+        {
+          match = { namespace = "waybar"; };
+          blur = true;
+          ignore_alpha = 0.3;
+          blur_popups = true;
+        }
+      ];
 
       bind = [
         (bind "SUPER + H" (moveFocus "l"))
         (bind "SUPER + J" (moveFocus "d"))
         (bind "SUPER + K" (moveFocus "u"))
         (bind "SUPER + L" (moveFocus "r"))
+
+        (bind "SUPER + semicolon" (exec "${cycleFcitx}"))
 
         (bind "SUPER + SHIFT + H" (moveWindow "l"))
         (bind "SUPER + SHIFT + J" (moveWindow "d"))
@@ -58,6 +105,7 @@ in
 
         (bind "SUPER + B" (exec "brave-origin"))
         (bind "SUPER + T" (exec "ghostty"))
+        (bind "SUPER + W" (exec "pick-wallpaper"))
         (bind "SUPER + SPACE" (exec "rofi -show drun"))
 
         (bind "SUPER + SHIFT + Q" "hl.dsp.window.close()")

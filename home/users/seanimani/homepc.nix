@@ -2,6 +2,9 @@
 {
   imports = [
     ../../programs/hyprland.nix
+    ../../programs/fcitx5.nix
+    ../../programs/hyprpaper.nix
+    ../../programs/waybar.nix
     ../../programs/rofi.nix
     ../../programs/ghostty.nix
     ../../programs/apps.nix

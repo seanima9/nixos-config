@@ -8,6 +8,15 @@
     ./${osConfig.networking.hostName}.nix
   ];
 
+  catppuccin = {
+    enable = true;
+    autoEnable = true;
+    flavor = "mocha";
+    accent = "mauve";
+    gtk.icon.enable = true;
+    vscode.profiles.default.enable = false;
+  };
+
   home = {
     username = "seanimani";
     homeDirectory = "/home/seanimani";
@@ -17,9 +26,5 @@
   programs.git.settings.user = {
     name = "Sean Imani";
     email = "seanimani@proton.me";
-  };
-
-  programs.fish.shellAbbrs = {
-    nrs = "sudo nixos-rebuild switch --flake /home/seanimani/nixos-config";
   };
 }

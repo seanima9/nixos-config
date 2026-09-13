@@ -5,7 +5,6 @@
     enableFishIntegration = true;
     settings = {
       command = "fish";
-      theme = "TokyoNight";
     };
   };
 }

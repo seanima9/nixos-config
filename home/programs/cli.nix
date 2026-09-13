@@ -27,6 +27,7 @@
       ];
     };
     jq.enable = true;
+    fastfetch.enable = true;
   };
 
   home.packages = with pkgs; [
