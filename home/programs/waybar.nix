@@ -1,6 +1,20 @@
 { pkgs, ... }:
 
 let
+  # Waybar 0.15 sends `dispatch workspace N`; Hyprland Lua rejects that as
+  # `hl.dispatch(workspace N)`. Super+N already uses hl.dsp.focus. Drop when 0.16.
+  waybar = pkgs.waybar.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/modules/hyprland/workspace.cpp \
+        --replace-fail \
+          'm_ipc.getSocket1Reply("dispatch workspace " + std::to_string(id()));' \
+          'm_ipc.getSocket1Reply("dispatch hl.dsp.focus({ workspace = \"" + std::to_string(id()) + "\" })");' \
+        --replace-fail \
+          'm_ipc.getSocket1Reply("dispatch workspace name:" + name());' \
+          'm_ipc.getSocket1Reply("dispatch hl.dsp.focus({ workspace = \"" + name() + "\" })");'
+    '';
+  });
+
   nordvpn-status = pkgs.writeShellScript "nordvpn-status" ''
     status=$(nordvpn status 2>/dev/null || true)
     case "$status" in
@@ -18,6 +32,7 @@ in
   programs.waybar = {
     enable = true;
     systemd.enable = true;
+    package = waybar;
 
     settings.mainBar = {
       layer = "top";

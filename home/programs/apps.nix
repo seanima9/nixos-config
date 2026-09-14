@@ -5,5 +5,6 @@
     brave-origin
     trezor-suite
     pavucontrol
+    seahorse
   ];
 }

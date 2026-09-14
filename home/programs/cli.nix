@@ -23,7 +23,7 @@
       colors = "auto";
       extraOptions = [
         "--group-directories-first"
-        "--classify"
+        "--classify=always"
       ];
     };
     jq.enable = true;
