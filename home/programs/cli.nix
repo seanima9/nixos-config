@@ -34,6 +34,7 @@
     procs
     age
     grok-build
+    cursor-cli
     unzip
   ];
 }

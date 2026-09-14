@@ -8,7 +8,7 @@
     extraGroups = [ "wheel" ];
   };
 
-  allowedUnfree = [ "grok-build" ];
+  allowedUnfree = [ "grok-build" "cursor" "cursor-cli" ];
 
   home-manager.users.seanimani = import ../../home/users/seanimani;
 }

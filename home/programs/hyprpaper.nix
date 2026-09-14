@@ -25,7 +25,7 @@ in
         {
           monitor = "";
           path = wallpaperDir;
-          timeout = 0;
+          timeout = 300;
         }
       ];
     };

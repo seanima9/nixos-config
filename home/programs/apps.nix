@@ -6,5 +6,6 @@
     trezor-suite
     pavucontrol
     seahorse
+    code-cursor
   ];
 }
