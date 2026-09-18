@@ -13,6 +13,8 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs = { nixpkgs, ... } @ inputs:

@@ -8,6 +8,9 @@
       show-icons = true;
       icon-theme = "Papirus-Dark";
       drun-display-format = "{name}";
+      drun-match-fields = "name,keywords";
+      sort = true;
+      sorting-method = "fzf";
     };
   };
 }

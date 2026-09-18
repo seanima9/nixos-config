@@ -1,9 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   lua = lib.generators.mkLuaInline;
 
-  bind = key: dispatcher: { _args = [ key (lua dispatcher) ]; };
+  bind = key: dispatcher: {
+    _args = [
+      key
+      (lua dispatcher)
+    ];
+  };
 
   exec = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
   moveFocus = dir: ''hl.dsp.focus({ direction = "${dir}" })'';
@@ -12,10 +22,12 @@ let
   gotoWorkspace = n: ''hl.dsp.focus({ workspace = "${toString n}" })'';
   moveToWorkspace = n: ''hl.dsp.window.move({ workspace = "${toString n}" })'';
 
-  workspaceBinds = lib.flatten (map (n: [
-    (bind "SUPER + ${toString n}" (gotoWorkspace n))
-    (bind "SUPER + SHIFT + ${toString n}" (moveToWorkspace n))
-  ]) (lib.range 1 9));
+  workspaceBinds = lib.flatten (
+    map (n: [
+      (bind "SUPER + ${toString n}" (gotoWorkspace n))
+      (bind "SUPER + SHIFT + ${toString n}" (moveToWorkspace n))
+    ]) (lib.range 1 9)
+  );
 
   cycleFcitx = pkgs.writeShellScript "cycle-fcitx" ''
     current=$(fcitx5-remote -n 2>/dev/null || true)
@@ -72,6 +84,7 @@ in
           force_default_wallpaper = 0;
           background_color = lua "colors.crust";
         };
+        xwayland.force_zero_scaling = true;
         decoration = {
           blur = {
             enabled = true;
@@ -83,7 +96,9 @@ in
 
       layer_rule = [
         {
-          match = { namespace = "waybar"; };
+          match = {
+            namespace = "waybar";
+          };
           blur = true;
           ignore_alpha = 0.3;
           blur_popups = true;
@@ -110,7 +125,8 @@ in
 
         (bind "SUPER + SHIFT + Q" "hl.dsp.window.close()")
         (bind "SUPER + SHIFT + M" "hl.dsp.exit()")
-      ] ++ workspaceBinds;
+      ]
+      ++ workspaceBinds;
     };
   };
 }

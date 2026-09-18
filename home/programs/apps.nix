@@ -10,6 +10,7 @@ in
     (code-cursor.override libsecretArgs)
     brave-origin
     tor-browser
+    mullvad-browser
     trezor-suite
     pavucontrol
     seahorse

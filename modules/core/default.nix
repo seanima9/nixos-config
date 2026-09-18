@@ -10,6 +10,9 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
-    sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
+    sharedModules = [
+      inputs.catppuccin.homeModules.catppuccin
+      inputs.nixvim.homeModules.nixvim
+    ];
   };
 }
